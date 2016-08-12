@@ -9,6 +9,7 @@ const {
   GraphQLID,
   GraphQLNonNull
 } = require('graphql');
+
 const humps = require('humps');
 const db = require('./database.js');
 
@@ -28,8 +29,8 @@ const PersonType = new GraphQLObjectType({
     },
     spouse: {
       type: PersonType,
-      resolve: ( obj, args, { pool }, info ) =>
-        db(pool).getUserById(obj.spouseId)
+      resolve: ( obj, args, { loaders }, info ) =>
+        loaders.usersByIds.load(obj.spouseId)
     }
   })
 });
@@ -46,7 +47,7 @@ const queryType = new GraphQLObjectType({
         }
       },
       // 3rd is context ------v
-      resolve: ( obj, args, { pool }, info ) => db(pool).getUserById(args.id)
+      resolve: ( obj, args, { loaders }, info ) => loaders.usersByIds.load(args.id)
     },
     people: {
       type: new GraphQLList(PersonType),

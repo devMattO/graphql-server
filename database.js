@@ -1,11 +1,12 @@
 const humps = require('humps');
 
 module.exports = (pool) => ({
-  getUserById(userId) {
+  getUsersByIds(userIds) {
     return pool.query(`
-      select * from person
-      where id = $1
-    `, [userId]).then(result => humps.camelizeKeys(result.rows[0]));
+      select *
+      from person
+      where id = ANY($1)
+    `, [userIds]).then(result => humps.camelizeKeys(result.rows));
   },
   getUsers() {
     return pool.query(`
