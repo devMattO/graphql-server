@@ -16,6 +16,15 @@ const query = process.argv[2]; //third thing written in cli
 
 app.get('/', (req,res)=> res.send('Hello World'));
 
+app.get('/graphql', (req,res) => {
+  const { query } = req.query;
+
+  // execute mySchema against a query
+  //   async operation, returns a promise
+  graphql(mySchema, query)
+    .then(result => res.json(result));
+});
+
 app.listen(PORT, ()=>{
   console.log(`Running server on port ${PORT}`);
 });
