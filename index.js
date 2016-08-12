@@ -2,6 +2,11 @@ const express = require('express');
 const graphqlHTTP = require('express-graphql'); // a connect middleware
 const app = express();
 const PORT = process.env.PORT || 3000;
+const pg = require('pg');
+const pool = new pg.Pool({
+  database: 'graphql_server_db',
+  user: 'postgres'
+});
 
 // function, the actual executor of the schema
 const {graphql} = require('graphql');
@@ -20,7 +25,8 @@ app.get('/', (req,res)=> res.send('Hello World'));
 
 app.use('/graphql', graphqlHTTP({
   schema: mySchema,
-  graphiql: true
+  graphiql: true,
+  context: { pool }
 }));
 
 //before connect middleware
