@@ -4,10 +4,12 @@ const {
   GraphQLSchema,
   GraphQLObjectType,
   GraphQLString,
-  GraphQLInt
+  GraphQLInt,
+  GraphQLList
 } = require('graphql');
 
 let counter = 13;
+let counters = [42, 43];
 
 const queryType = new GraphQLObjectType({
   name: 'RootQuery',
@@ -19,6 +21,10 @@ const queryType = new GraphQLObjectType({
     counter:{
       type: GraphQLInt,
       resolve: _ => counter
+    },
+    counters:{
+      type: new GraphQLList(GraphQLInt),
+      resolve: _ => counters
     }
   }
 });
