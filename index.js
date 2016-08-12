@@ -5,8 +5,13 @@ const PORT = process.env.PORT || 3000;
 const pg = require('pg');
 const pool = new pg.Pool({
   database: 'graphql_server_db',
-  user: 'postgres'
+  user: 'MatthewOlsen'
 });
+// const DataLoader = require('dataloader');
+// const userLoader = new DataLoader(keys => myBatchGetUsers(keys));
+// userLoader.load(1)
+// .then(user => userLoader.load());
+
 
 // function, the actual executor of the schema
 const {graphql} = require('graphql');

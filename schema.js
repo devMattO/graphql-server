@@ -10,16 +10,8 @@ const {
   GraphQLNonNull
 } = require('graphql');
 const humps = require('humps');
+const db = require('./database.js');
 
-
-
-// const person = humps.camelizeKeys({
-//   id: 1,
-//   firstName: 'Matt',
-//   lastName: 'Olsen',
-//   email: 'olsen_matthew@yahoo.com',
-//   spouseId: 2
-// });
 
 const PersonType = new GraphQLObjectType({
   name: 'Person',
@@ -36,10 +28,9 @@ const PersonType = new GraphQLObjectType({
     },
     spouse: {
       type: PersonType,
-      resolve: ( obj, args, { pool }, info ) => pool.query(`
-        select * from spouses
-        where id = $1
-      `, [obj.spouseId]).then(result => humps.camelizeKeys(result.rows[0])) }
+      resolve: ( obj, args, { pool }, info ) =>
+        db(pool).getUserById(obj.spouseId)
+    }
   })
 });
 
@@ -55,11 +46,11 @@ const queryType = new GraphQLObjectType({
         }
       },
       // 3rd is context ------v
-      resolve: ( obj, args, { pool }, info ) => pool.query(`
-        select * from spouses
-        where id = 1
-      `[args.id])
-      .then(result => humps.camelizeKeys(result.rows[0]))
+      resolve: ( obj, args, { pool }, info ) => db(pool).getUserById(args.id)
+    },
+    people: {
+      type: new GraphQLList(PersonType),
+      resolve: ( obj, args, { pool } ) => db(pool).getUsers()
     }
   }
 });
