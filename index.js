@@ -1,3 +1,6 @@
+const express = require('express');
+const app = express();
+const PORT = process.env.PORT || 3000;
 // function, the actual executor of the schema
 const {graphql} = require('graphql');
 
@@ -8,5 +11,11 @@ const mySchema = require('./schema');
 const query = process.argv[2]; //third thing written in cli
 
 // execute mySchema against a query
-graphql(mySchema, query)
-.then( console.log );
+// graphql(mySchema, query)
+// .then( console.log );
+
+app.get('/', (req,res)=> res.send('Hello World'));
+
+app.listen(PORT, ()=>{
+  console.log(`Running server on port ${PORT}`);
+});
