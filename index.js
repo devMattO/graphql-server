@@ -1,14 +1,16 @@
 const express = require('express');
+const graphqlHTTP = require('express-graphql'); // a connect middleware
 const app = express();
 const PORT = process.env.PORT || 3000;
+
 // function, the actual executor of the schema
 const {graphql} = require('graphql');
 
 // the schema to execute
 const mySchema = require('./schema');
 
-// get query from cli arguments
-const query = process.argv[2]; //third thing written in cli
+// // get query from cli arguments
+// const query = process.argv[2]; //third thing written in cli
 
 // execute mySchema against a query
 // graphql(mySchema, query)
@@ -16,15 +18,26 @@ const query = process.argv[2]; //third thing written in cli
 
 app.get('/', (req,res)=> res.send('Hello World'));
 
-app.get('/graphql', (req,res) => {
-  const { query } = req.query;
+app.use('/graphql', graphqlHTTP({
+  schema: mySchema,
+  graphiql: true
+}));
 
-  // execute mySchema against a query
-  //   async operation, returns a promise
-  graphql(mySchema, query)
-    .then(result => res.json(result));
-});
+//before connect middleware
+//v----v-----vv-----vv----v
+// app.get('/graphql', (req,res) => {
+//   const { query } = req.query;
+
+//   // execute mySchema against a query
+//   //   async operation, returns a promise
+//   graphql(mySchema, query)
+//     .then(result => res.json(result));
+// });
 
 app.listen(PORT, ()=>{
   console.log(`Running server on port ${PORT}`);
 });
+
+
+// :query:
+// curl localhost:3000/graphql\?query=%7Bhello%2Ccounter%7D
