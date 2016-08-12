@@ -9,6 +9,4 @@ const query = process.argv[2]; //third thing written in cli
 
 // execute mySchema against a query
 graphql(mySchema, query)
-.then((data)=>{
-  console.log(data,'<----data');
-});
+.then( console.log );

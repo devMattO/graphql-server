@@ -3,8 +3,11 @@
 const {
   GraphQLSchema,
   GraphQLObjectType,
-  GraphQLString
+  GraphQLString,
+  GraphQLInt
 } = require('graphql');
+
+let counter = 13;
 
 const queryType = new GraphQLObjectType({
   name: 'RootQuery',
@@ -12,6 +15,10 @@ const queryType = new GraphQLObjectType({
     hello:{
       type: GraphQLString,
       resolve: _ => 'World'
+    },
+    counter:{
+      type: GraphQLInt,
+      resolve: _ => counter
     }
   }
 });
