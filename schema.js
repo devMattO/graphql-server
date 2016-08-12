@@ -23,8 +23,20 @@ const queryType = new GraphQLObjectType({
   }
 });
 
+const mutationType = new GraphQLObjectType({
+  name: 'RootMutation',
+
+  fields: {
+    incrementCounter: {
+      type: GraphQLInt,
+      resolve: _ => ++counter
+    }
+  }
+});
+
 const mySchema = new GraphQLSchema({
-  query: queryType
+  query: queryType,
+  mutation: mutationType
 });
 
 module.exports = mySchema;
