@@ -9,67 +9,39 @@ const {
   GraphQLID
 } = require('graphql');
 
-let counter = 13;
-let counters = [42, 43];
-let counterObj = {
-  id: 55,
-  value: 42
+const person = {
+  id: 1,
+  first_name: 'Matt',
+  last_name: 'Olsen',
+  email: 'olsen_matthew@yahoo.com',
+  spouse_id: 2
 };
-let countersObj = [
-  { id: 550, value: 43 },
-  { id: 551, value: 44 }
-];
 
-const CounterObjType = new GraphQLObjectType({ // had hoisting issue with this, always put before you use it
-  name: 'CounterObj',
+const PersonType = new GraphQLObjectType({
+  name: 'Person',
 
   fields: {
     id: { type: GraphQLID },
-    value: { type: GraphQLInt }
+    first_name: { type: GraphQLString },
+    last_name: { type: GraphQLString },
+    email: { type: GraphQLString },
+    spouse_id: { type: GraphQLInt }
   }
 });
 
 const queryType = new GraphQLObjectType({
   name: 'RootQuery',
+
   fields: {
-    hello:{
-      type: GraphQLString,
-      resolve: _ => 'World'
-    },
-    counter:{
-      type: GraphQLInt,
-      resolve: _ => counter
-    },
-    counters:{
-      type: new GraphQLList(GraphQLInt),
-      resolve: _ => counters
-    },
-    counterObj: {
-      type: CounterObjType,
-      resolve: _ => counterObj
-    },
-    countersObj: {
-      type: new GraphQLList(CounterObjType),
-      resolve: _ => countersObj
+    person: {
+      type: PersonType,
+      resolve: _ => person
     }
   }
 });
-
-const mutationType = new GraphQLObjectType({
-  name: 'RootMutation',
-
-  fields: {
-    incrementCounter: {
-      type: GraphQLInt,
-      resolve: _ => ++counter
-    }
-  }
-});
-
 
 const mySchema = new GraphQLSchema({
-  query: queryType,
-  mutation: mutationType
+  query: queryType
 });
 
 module.exports = mySchema;
