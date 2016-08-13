@@ -10,7 +10,7 @@ const pg = require('pg');
 const pool = new pg.Pool({
   database: 'graphql_server_db',
   user: 'MatthewOlsen'
-});
+}); //how to get pool going with sequelize??
 
 const db = require('./database')(pool);
 const DataLoader = require('dataloader');

@@ -6,7 +6,7 @@ module.exports = (pool) => ({
       select *
       from person
       where id = ANY($1)
-    `, [userIds]).then(result => humps.camelizeKeys(result.rows));
+    `, [userIds]).then(result => humps.camelizeKeys(result.rows)); //using sequelize instead of pg
   },
   getUsers() {
     return pool.query(`
